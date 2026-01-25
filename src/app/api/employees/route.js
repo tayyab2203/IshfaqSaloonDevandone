@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '../../../lib/db.js';
 import Employee from '../../../models/Employee.js';
+import Service from '../../../models/Service.js';
 import { requireAuth } from '../../../lib/auth-helpers.js';
 
 export async function GET(request) {

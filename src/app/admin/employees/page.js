@@ -2,6 +2,7 @@ import { getSession } from '../../../lib/auth-helpers.js';
 import { requireAuth } from '../../../lib/auth-helpers.js';
 import connectDB from '../../../lib/db.js';
 import Employee from '../../../models/Employee.js';
+import Service from '../../../models/Service.js';
 import PageHeader from '../../../components/admin/PageHeader.js';
 import Button from '../../../components/ui/Button.js';
 import { formatDate, getStatusBadgeClasses } from '../../../lib/utils.js';
