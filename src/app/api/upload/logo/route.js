@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { put } from '@vercel/blob';
 import { requireAuth } from '../../../../lib/auth-helpers.js';
 
 export async function POST(request) {
@@ -34,39 +33,31 @@ export async function POST(request) {
       );
     }
 
-    // Convert file to buffer
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
     // Generate unique filename
     const timestamp = Date.now();
     const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
     const extension = originalName.split('.').pop() || 'png';
-    const filename = `logo_${timestamp}.${extension}`;
+    const filename = `logo/logo_${timestamp}.${extension}`;
 
-    // Create uploads directory if it doesn't exist
-    const uploadsDir = join(process.cwd(), 'public', 'uploads', 'logo');
-    try {
-      await mkdir(uploadsDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist, ignore error
-    }
+    // Upload to Vercel Blob Storage
+    const blob = await put(filename, file, {
+      access: 'public',
+      contentType: file.type,
+    });
 
-    // Save file
-    const filepath = join(uploadsDir, filename);
-    await writeFile(filepath, buffer);
-
-    // Return the public URL path
-    const logoUrl = `/uploads/logo/${filename}`;
-
+    // Return the public URL
     return NextResponse.json({
       success: true,
-      data: { logoUrl },
+      data: { logoUrl: blob.url },
     });
   } catch (error) {
     console.error('Error uploading logo:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to upload logo' },
+      { 
+        success: false, 
+        error: error.message || 'Failed to upload logo',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     );
   }
