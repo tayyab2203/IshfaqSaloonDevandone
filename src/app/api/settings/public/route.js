@@ -24,9 +24,20 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching public settings:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fetch settings' },
-      { status: 500 }
-    );
+    // Return fallback data instead of error to prevent app crashes
+    // This allows the app to work even when DB is temporarily unavailable
+    return NextResponse.json({
+      success: true,
+      data: {
+        salonName: 'Ishfaq Mens Salon',
+        logo: '',
+        salonAddress: '',
+        salonPhone: '+92 300 1234567',
+        whatsappNumber: '+92 300 1234567',
+        openingTime: '09:00',
+        closingTime: '18:00',
+        closedDays: [],
+      },
+    });
   }
 }
