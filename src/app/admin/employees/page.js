@@ -1,29 +1,28 @@
 import { getSession } from '../../../lib/auth-helpers.js';
+import { requireAuth } from '../../../lib/auth-helpers.js';
+import connectDB from '../../../lib/db.js';
+import Employee from '../../../models/Employee.js';
 import PageHeader from '../../../components/admin/PageHeader.js';
 import Button from '../../../components/ui/Button.js';
-import { formatDate, getStatusBadgeClasses, formatCookiesForHeader } from '../../../lib/utils.js';
+import { formatDate, getStatusBadgeClasses } from '../../../lib/utils.js';
 import Link from 'next/link';
-import { cookies } from 'next/headers';
 
 async function getEmployees(search, status) {
   try {
-    const params = new URLSearchParams();
-    if (status) params.append('status', status);
-    const cookieStore = await cookies();
-    const cookieHeader = formatCookiesForHeader(cookieStore);
-
-    const res = await fetch(
-      `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/employees?${params.toString()}`,
-      { 
-        cache: 'no-store',
-        headers: {
-          Cookie: cookieHeader,
-        },
-      }
-    );
-    const data = await res.json();
+    await requireAuth();
+    await connectDB();
     
-    let employees = data.success ? data.data : [];
+    const query = {};
+    
+    // Filter by status
+    if (status) {
+      query.status = status;
+    } else {
+      query.status = 'active';
+    }
+    
+    // Fetch employees from database
+    let employees = await Employee.find(query).populate('services', 'name').lean();
     
     // Filter by search if provided
     if (search) {
@@ -32,6 +31,16 @@ async function getEmployees(search, status) {
         emp => emp.name.toLowerCase().includes(searchLower)
       );
     }
+    
+    // Convert _id to string for serialization
+    employees = employees.map(emp => ({
+      ...emp,
+      _id: emp._id.toString(),
+      services: emp.services?.map(s => ({
+        ...s,
+        _id: s._id.toString()
+      })) || []
+    }));
     
     return employees;
   } catch (error) {
