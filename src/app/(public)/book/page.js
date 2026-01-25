@@ -381,7 +381,7 @@ export default function BookPage() {
                   />
                   <div className="flex-1 flex items-center gap-3 min-w-0">
                     <EmployeeImage
-                      src={employee.imageUrl}
+                      src={employee.image}
                       alt={employee.name}
                       className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-medium-grey shrink-0"
                       fallbackClassName="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-blue flex items-center justify-center shrink-0"

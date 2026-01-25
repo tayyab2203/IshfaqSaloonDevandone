@@ -225,33 +225,57 @@ export default async function HomePage() {
                 {featuredTeam.map((member, index) => (
                   <div
                     key={member._id.toString()}
-                    className="group bg-light-grey border border-medium-grey rounded-xl p-6 lg:p-8 text-center hover:shadow-xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
+                    className="group bg-white border-2 border-medium-grey rounded-2xl p-6 lg:p-8 text-center hover:shadow-2xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
                   >
                     <div className="mb-4">
-                      <EmployeeImage
-                        src={member.imageUrl}
-                        alt={member.name}
-                        className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full mx-auto mb-4 object-cover border-4 border-white shadow-lg group-hover:scale-110 transition-transform duration-300"
-                        fallbackClassName="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full mx-auto mb-4 bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300"
-                        fallbackInitial={member.name.charAt(0).toUpperCase()}
-                        fallbackContent={
-                          <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full mx-auto mb-4 bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <span className="text-white text-3xl sm:text-4xl font-bold">
-                              {member.name.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                        }
-                      />
-                      <h3 className="text-xl lg:text-2xl font-bold text-dark-charcoal mb-2">
+                      <div className="relative mb-6">
+                        <EmployeeImage
+                          src={member.image}
+                          alt={member.name}
+                          className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full mx-auto object-cover border-4 border-white shadow-xl group-hover:scale-110 transition-transform duration-300"
+                          fallbackClassName="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full mx-auto bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300"
+                          fallbackInitial={member.name.charAt(0).toUpperCase()}
+                          fallbackContent={
+                            <div className="w-32 h-32 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-full mx-auto bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
+                              <span className="text-white text-4xl sm:text-5xl font-bold">
+                                {member.name.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                          }
+                        />
+                        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-slate-blue text-white px-3 py-1 rounded-full text-xs font-semibold shadow-lg">
+                          {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
+                        </div>
+                      </div>
+                      <h3 className="text-xl lg:text-2xl font-bold text-dark-charcoal mb-3">
                         {member.name}
                       </h3>
-                      <p className="text-slate-blue capitalize font-semibold mb-3">{member.role}</p>
-                      {member.services && member.services.length > 0 && (
-                        <p className="text-sm text-dark-charcoal">
-                          {member.services.slice(0, 2).map((s) => s.name).join(', ')}
-                          {member.services.length > 2 && ' + more'}
-                        </p>
+                      {member.services && member.services.length > 0 ? (
+                        <div className="flex flex-wrap gap-2 justify-center mb-4">
+                          {member.services.slice(0, 3).map((service) => (
+                            <span
+                              key={service._id?.toString() || service}
+                              className="px-3 py-1.5 bg-gradient-to-r from-slate-blue/10 to-[#7a8294]/10 text-slate-blue rounded-full text-xs font-medium border border-slate-blue/20"
+                            >
+                              {service.name || service}
+                            </span>
+                          ))}
+                          {member.services.length > 3 && (
+                            <span className="px-3 py-1.5 bg-gradient-to-r from-slate-blue/10 to-[#7a8294]/10 text-slate-blue rounded-full text-xs font-medium border border-slate-blue/20">
+                              +{member.services.length - 3} more
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-slate-blue italic mb-4">Specialized in all services</p>
                       )}
+                      <Link
+                        href={`/book?employeeId=${member._id}`}
+                        className="inline-block w-full bg-gradient-to-r from-dark-charcoal to-[#2d3139] text-white px-6 py-3 rounded-lg text-sm font-semibold hover:from-slate-blue hover:to-[#7a8294] transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-xl"
+                        style={{ color: '#FFFFFF' }}
+                      >
+                        Book with {member.name.split(' ')[0]}
+                      </Link>
                     </div>
                   </div>
                 ))}
