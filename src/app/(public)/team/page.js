@@ -3,6 +3,9 @@ import connectDB from '../../../lib/db.js';
 import Employee from '../../../models/Employee.js';
 import Settings from '../../../models/Settings.js';
 
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   try {
     await connectDB();
