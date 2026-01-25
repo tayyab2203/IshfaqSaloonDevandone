@@ -5,6 +5,7 @@ import Employee from '../../../models/Employee.js';
 import Service from '../../../models/Service.js';
 import PageHeader from '../../../components/admin/PageHeader.js';
 import Button from '../../../components/ui/Button.js';
+import EmployeeImage from '../../../components/admin/EmployeeImage.js';
 import { formatDate, getStatusBadgeClasses } from '../../../lib/utils.js';
 import Link from 'next/link';
 
@@ -137,20 +138,12 @@ export default async function EmployeesPage({ searchParams }) {
                   >
                     <td className="px-4 lg:px-6 py-3 lg:py-4">
                       <div className="flex items-center gap-3">
-                        {employee.image ? (
-                          <img
-                            src={employee.image}
-                            alt={employee.name}
-                            className="w-10 h-10 rounded-full object-cover border border-medium-grey"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div className="w-10 h-10 rounded-full bg-light-grey border border-medium-grey flex items-center justify-center">
-                            <span className="text-slate-blue text-xs">{employee.name.charAt(0).toUpperCase()}</span>
-                          </div>
-                        )}
+                        <EmployeeImage
+                          src={employee.image}
+                          alt={employee.name}
+                          className="w-10 h-10 rounded-full object-cover border border-medium-grey"
+                          fallbackInitial={employee.name.charAt(0).toUpperCase()}
+                        />
                         <span className="text-sm text-dark-charcoal font-semibold">{employee.name}</span>
                       </div>
                     </td>
@@ -201,20 +194,12 @@ export default async function EmployeesPage({ searchParams }) {
               <div key={employee._id} className="p-4 space-y-3">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-3">
-                    {employee.image ? (
-                      <img
-                        src={employee.image}
-                        alt={employee.name}
-                        className="w-12 h-12 rounded-full object-cover border border-medium-grey flex-shrink-0"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-light-grey border border-medium-grey flex items-center justify-center flex-shrink-0">
-                        <span className="text-slate-blue text-xs">{employee.name.charAt(0).toUpperCase()}</span>
-                      </div>
-                    )}
+                    <EmployeeImage
+                      src={employee.image}
+                      alt={employee.name}
+                      className="w-12 h-12 rounded-full object-cover border border-medium-grey flex-shrink-0"
+                      fallbackInitial={employee.name.charAt(0).toUpperCase()}
+                    />
                     <div>
                       <p className="font-semibold text-dark-charcoal text-sm">{employee.name}</p>
                       <p className="text-xs text-slate-blue mt-1">{employee.phone}</p>

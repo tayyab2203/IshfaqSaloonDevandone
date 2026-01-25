@@ -1,6 +1,7 @@
 import { getSession } from '../../../../lib/auth-helpers.js';
 import PageHeader from '../../../../components/admin/PageHeader.js';
 import Button from '../../../../components/ui/Button.js';
+import EmployeeImage from '../../../../components/admin/EmployeeImage.js';
 import Link from 'next/link';
 import { formatDate, formatCurrency, formatCookiesForHeader } from '../../../../lib/utils.js';
 import { cookies } from 'next/headers';
@@ -61,13 +62,11 @@ export default async function EmployeeDetailsPage({ params }) {
           {employee.image && (
             <div className="bg-white border border-medium-grey rounded-lg p-6">
               <h2 className="text-xl font-bold text-dark-charcoal mb-4">Photo</h2>
-              <img
+              <EmployeeImage
                 src={employee.image}
                 alt={employee.name}
                 className="w-48 h-48 object-cover rounded-lg border border-medium-grey"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                }}
+                fallbackInitial={employee.name.charAt(0).toUpperCase()}
               />
             </div>
           )}

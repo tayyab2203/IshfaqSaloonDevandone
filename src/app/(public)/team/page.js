@@ -2,6 +2,7 @@ import Link from 'next/link';
 import connectDB from '../../../lib/db.js';
 import Employee from '../../../models/Employee.js';
 import Settings from '../../../models/Settings.js';
+import EmployeeImage from '../../../components/admin/EmployeeImage.js';
 
 // Force dynamic rendering to avoid build-time database access
 export const dynamic = 'force-dynamic';
@@ -62,26 +63,20 @@ export default async function TeamPage() {
                   className="group bg-white border border-medium-grey rounded-xl p-6 lg:p-8 text-center hover:shadow-2xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
                 >
                   <div className="mb-6">
-                    {member.imageUrl ? (
-                      <img
-                        src={member.imageUrl}
-                        alt={member.name}
-                        className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full mx-auto mb-4 object-cover border-4 border-white shadow-lg group-hover:scale-110 group-hover:border-slate-blue transition-all duration-300"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          const fallback = e.target.nextElementSibling;
-                          if (fallback) fallback.style.display = 'flex';
-                        }}
-                      />
-                    ) : null}
-                    <div
-                      className={`w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full mx-auto mb-4 bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:from-dark-charcoal group-hover:to-slate-blue transition-all duration-300 ${member.imageUrl ? 'hidden' : ''}`}
-                      style={{ display: member.imageUrl ? 'none' : 'flex' }}
-                    >
-                      <span className="text-white text-4xl sm:text-5xl font-bold">
-                        {member.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    <EmployeeImage
+                      src={member.imageUrl}
+                      alt={member.name}
+                      className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full mx-auto mb-4 object-cover border-4 border-white shadow-lg group-hover:scale-110 group-hover:border-slate-blue transition-all duration-300"
+                      fallbackClassName="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full mx-auto mb-4 bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:from-dark-charcoal group-hover:to-slate-blue transition-all duration-300"
+                      fallbackInitial={member.name.charAt(0).toUpperCase()}
+                      fallbackContent={
+                        <div className="w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full mx-auto mb-4 bg-gradient-to-br from-slate-blue to-[#7a8294] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:from-dark-charcoal group-hover:to-slate-blue transition-all duration-300">
+                          <span className="text-white text-4xl sm:text-5xl font-bold">
+                            {member.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      }
+                    />
                     <h3 className="text-xl lg:text-2xl font-bold text-dark-charcoal mb-2">
                       {member.name}
                     </h3>

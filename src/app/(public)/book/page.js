@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import Button from '../../../components/ui/Button.js';
+import EmployeeImage from '../../../components/admin/EmployeeImage.js';
 
 export default function BookPage() {
   const router = useRouter();
@@ -379,26 +380,20 @@ export default function BookPage() {
                     className="mt-1 mr-3 sm:mr-4 w-5 h-5 shrink-0"
                   />
                   <div className="flex-1 flex items-center gap-3 min-w-0">
-                    {employee.imageUrl ? (
-                      <img
-                        src={employee.imageUrl}
-                        alt={employee.name}
-                        className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-medium-grey shrink-0"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          const fallback = e.target.nextElementSibling;
-                          if (fallback) fallback.style.display = 'flex';
-                        }}
-                      />
-                    ) : null}
-                    <div
-                      className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-blue flex items-center justify-center shrink-0 ${employee.imageUrl ? 'hidden' : ''}`}
-                      style={{ display: employee.imageUrl ? 'none' : 'flex' }}
-                    >
-                      <span className="text-white text-base sm:text-xl font-bold">
-                        {employee.name.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    <EmployeeImage
+                      src={employee.imageUrl}
+                      alt={employee.name}
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-medium-grey shrink-0"
+                      fallbackClassName="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-blue flex items-center justify-center shrink-0"
+                      fallbackInitial={employee.name.charAt(0).toUpperCase()}
+                      fallbackContent={
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-slate-blue flex items-center justify-center shrink-0">
+                          <span className="text-white text-base sm:text-xl font-bold">
+                            {employee.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      }
+                    />
                     <div className="min-w-0 flex-1">
                       <h3 className="font-semibold text-dark-charcoal text-base sm:text-lg truncate">{employee.name}</h3>
                       <p className="text-sm text-slate-blue capitalize">{employee.role}</p>
