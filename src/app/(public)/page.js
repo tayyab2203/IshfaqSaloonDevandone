@@ -208,10 +208,10 @@ export default async function HomePage() {
       </section>
 
       {/* Team Introduction */}
-      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-white">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-dark-charcoal to-[#2d3139] text-white">
         <div className="container mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark-charcoal mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               Meet Our Expert Team
             </h2>
             <p className="text-lg text-slate-blue max-w-2xl mx-auto">
@@ -247,7 +247,7 @@ export default async function HomePage() {
                           {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
                         </div>
                       </div>
-                      <h3 className="text-xl lg:text-2xl font-bold text-dark-charcoal mb-3">
+                      <h3 className="text-xl lg:text-2xl font-bold text-white mb-3">
                         {member.name}
                       </h3>
                       {member.services && member.services.length > 0 ? (
@@ -283,7 +283,7 @@ export default async function HomePage() {
               <div className="text-center">
                 <Link
                   href="/team"
-                  className="inline-flex items-center gap-2 text-slate-blue hover:text-dark-charcoal transition-colors font-semibold text-lg group"
+                  className="inline-flex items-center gap-2 text-slate-blue hover:text-white transition-colors font-semibold text-lg group"
                 >
                   View Full Team
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,10 +301,10 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-dark-charcoal to-[#2d3139] text-white">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-white">
         <div className="container mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark-charcoal mb-4">
               What Our Clients Say
             </h2>
             <p className="text-lg text-slate-blue max-w-2xl mx-auto">
@@ -371,21 +371,23 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-light-grey to-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark-charcoal mb-6">
-            Ready to Transform Your Look?
-          </h2>
-          <p className="text-lg sm:text-xl text-slate-blue mb-8 max-w-2xl mx-auto">
-            Book your appointment today and experience the difference of professional salon services
-          </p>
-          <Link
-            href="/book"
-            className="inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-dark-charcoal to-[#2d3139] text-white font-semibold rounded-lg hover:from-slate-blue hover:to-[#7a8294] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-slate-blue/50"
-            style={{ color: '#FFFFFF' }}
-          >
-            Book Your Appointment Now
-          </Link>
+      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-light-grey">
+        <div className="container mx-auto">
+          <div className="max-w-7xl mx-auto bg-dark-charcoal text-white rounded-2xl shadow-lg p-8 sm:p-12 lg:p-16 text-center">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
+              Ready to Transform Your Look?
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-blue mb-8 max-w-2xl mx-auto">
+              Book your appointment today and experience the difference of professional salon services
+            </p>
+            <Link
+              href="/book"
+              className="inline-flex items-center justify-center px-10 py-4 bg-slate-blue text-white font-semibold rounded-lg hover:bg-[#7a8294] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-slate-blue/50"
+              style={{ color: '#FFFFFF' }}
+            >
+              Book Your Appointment Now
+            </Link>
+          </div>
         </div>
       </section>
     </div>

@@ -34,6 +34,7 @@ export default function Footer() {
     { href: '/about', label: 'About Us' },
     { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact' },
+    { href: '/login', label: 'Admin Login' },
   ];
 
   const socialLinks = [
