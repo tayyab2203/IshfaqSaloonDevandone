@@ -153,7 +153,7 @@ export default async function HomePage() {
                 {featuredServices.map((service, index) => (
                   <div
                     key={service._id.toString()}
-                    className="group bg-white border border-medium-grey rounded-xl p-6 lg:p-8 hover:shadow-xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
+                    className="group bg-white border border-medium-grey rounded-xl p-6 lg:p-8 shadow-lg hover:shadow-2xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <div className="mb-4">
@@ -301,10 +301,10 @@ export default async function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-light-grey to-white">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-dark-charcoal to-[#2d3139] text-white">
         <div className="container mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark-charcoal mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
               What Our Clients Say
             </h2>
             <p className="text-lg text-slate-blue max-w-2xl mx-auto">
@@ -341,7 +341,7 @@ export default async function HomePage() {
             ].map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-white border border-medium-grey rounded-xl p-6 lg:p-8 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                className="bg-white border border-medium-grey rounded-xl p-6 lg:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
               >
                 <div className="flex mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -371,9 +371,9 @@ export default async function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-dark-charcoal to-[#2d3139] text-white">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 bg-gradient-to-br from-light-grey to-white">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-dark-charcoal mb-6">
             Ready to Transform Your Look?
           </h2>
           <p className="text-lg sm:text-xl text-slate-blue mb-8 max-w-2xl mx-auto">
@@ -381,7 +381,8 @@ export default async function HomePage() {
           </p>
           <Link
             href="/book"
-            className="inline-flex items-center justify-center px-10 py-4 bg-slate-blue text-white font-semibold rounded-lg hover:bg-[#7a8294] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-slate-blue/50"
+            className="inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-dark-charcoal to-[#2d3139] text-white font-semibold rounded-lg hover:from-slate-blue hover:to-[#7a8294] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-slate-blue/50"
+            style={{ color: '#FFFFFF' }}
           >
             Book Your Appointment Now
           </Link>

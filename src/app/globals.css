@@ -141,6 +141,35 @@ input, textarea, select {
   animation: fade-in 0.6s ease-out;
 }
 
+/* WhatsApp Button Animations */
+@keyframes whatsapp-blink {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.7; 
+  }
+}
+
+.whatsapp-blink {
+  animation: whatsapp-blink 2s ease-in-out infinite;
+}
+
+@keyframes whatsapp-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.whatsapp-pulse {
+  animation: whatsapp-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* Line clamp utility */
 .line-clamp-2 {
   display: -webkit-box;

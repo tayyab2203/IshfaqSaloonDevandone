@@ -85,7 +85,7 @@ export default function PaymentPage() {
     return (
       <div className="py-12 sm:py-16 px-4 bg-light-grey min-h-screen">
         <div className="container mx-auto max-w-2xl">
-          <div className="bg-white border border-medium-grey rounded-lg p-6 text-center">
+          <div className="bg-white border border-medium-grey rounded-lg p-6 text-center shadow-lg">
             <h1 className="text-2xl font-bold text-dark-charcoal mb-4">Booking Not Found</h1>
             <p className="text-slate-blue mb-6">{error || 'Unable to load booking details'}</p>
             <Link href="/book">
@@ -114,7 +114,7 @@ export default function PaymentPage() {
           </div>
         )}
 
-        <div className="bg-white border border-medium-grey rounded-lg p-6 sm:p-8 space-y-6">
+        <div className="bg-white border border-medium-grey rounded-lg p-6 sm:p-8 space-y-6 shadow-lg">
           {/* Booking Summary */}
           <div>
             <h2 className="text-xl font-bold text-dark-charcoal mb-4">Booking Summary</h2>

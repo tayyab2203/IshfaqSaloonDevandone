@@ -276,7 +276,7 @@ export default function BookPage() {
 
         {/* Step 1: Select Services */}
         {step === 1 && (
-          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8">
+          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8 shadow-lg">
             <h2 className="text-xl sm:text-2xl font-bold text-dark-charcoal mb-4 sm:mb-6">Select Services</h2>
             <div className="space-y-4 mb-6">
               {services.map((service) => (
@@ -335,7 +335,7 @@ export default function BookPage() {
 
         {/* Step 2: Select Date & Time */}
         {step === 2 && (
-          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8">
+          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8 shadow-lg">
             <h2 className="text-xl sm:text-2xl font-bold text-dark-charcoal mb-4 sm:mb-6">Select Date & Time</h2>
             <div className="mb-6">
               <label className="block text-sm font-semibold text-dark-charcoal mb-2">
@@ -398,7 +398,7 @@ export default function BookPage() {
 
         {/* Step 3: Select Staff */}
         {step === 3 && (
-          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8">
+          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8 shadow-lg">
             <h2 className="text-xl sm:text-2xl font-bold text-dark-charcoal mb-4 sm:mb-6">Select Staff (Optional)</h2>
             <div className="space-y-4 mb-6">
               <label className="flex items-start p-4 sm:p-5 border-2 border-medium-grey rounded-lg cursor-pointer hover:bg-light-grey hover:border-slate-blue transition-all duration-200 active:bg-medium-grey touch-manipulation">
@@ -460,7 +460,7 @@ export default function BookPage() {
 
         {/* Step 4: Contact Information */}
         {step === 4 && (
-          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8">
+          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8 shadow-lg">
             <h2 className="text-xl sm:text-2xl font-bold text-dark-charcoal mb-4 sm:mb-6">Contact Information</h2>
             <div className="space-y-4">
               <div>
@@ -521,7 +521,7 @@ export default function BookPage() {
 
         {/* Step 5: Confirmation */}
         {step === 5 && (
-          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8">
+          <div className="bg-white border border-medium-grey rounded-lg p-4 sm:p-6 lg:p-8 shadow-lg">
             <h2 className="text-xl sm:text-2xl font-bold text-dark-charcoal mb-4 sm:mb-6">Confirm Booking</h2>
             {bookingId ? (
               <div className="text-center">

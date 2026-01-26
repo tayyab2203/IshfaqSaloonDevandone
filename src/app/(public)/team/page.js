@@ -60,7 +60,7 @@ export default async function TeamPage() {
               {teamMembers.map((member, index) => (
                 <div
                   key={member._id.toString()}
-                  className="group bg-white border-2 border-medium-grey rounded-2xl p-6 lg:p-8 text-center hover:shadow-2xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
+                  className="group bg-white border-2 border-medium-grey rounded-2xl p-6 lg:p-8 text-center shadow-lg hover:shadow-2xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
                 >
                   <div className="mb-6">
                     <div className="relative mb-6">

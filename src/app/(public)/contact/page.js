@@ -183,7 +183,7 @@ export default function ContactPage() {
           {contactInfo.map((info, index) => (
             <div
               key={index}
-              className="bg-white border border-medium-grey rounded-xl p-6 hover:shadow-xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
+              className="bg-white border border-medium-grey rounded-xl p-6 shadow-lg hover:shadow-2xl hover:border-slate-blue transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="w-14 h-14 bg-gradient-to-br from-slate-blue to-[#7a8294] rounded-lg flex items-center justify-center text-white mb-4">
                 {info.icon}

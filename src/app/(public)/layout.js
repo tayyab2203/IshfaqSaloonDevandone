@@ -1,5 +1,7 @@
 import Header from '../../components/public/Header.js';
 import Footer from '../../components/public/Footer.js';
+import WhatsAppButton from '../../components/public/WhatsAppButton.js';
+import ScrollToTop from '../../components/public/ScrollToTop.js';
 import connectDB from '../../lib/db.js';
 import Settings from '../../models/Settings.js';
 
@@ -34,6 +36,8 @@ export default function PublicLayout({ children }) {
       <Header />
       <main className="grow pt-16">{children}</main>
       <Footer />
+      <WhatsAppButton />
+      <ScrollToTop />
     </div>
   );
 }

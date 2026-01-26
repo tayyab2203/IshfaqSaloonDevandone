@@ -46,7 +46,7 @@ export default function GalleryPage() {
           {galleryItems.map((item) => (
             <div
               key={item.id}
-              className="group relative aspect-square bg-gradient-to-br from-slate-blue to-[#7a8294] rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
+              className="group relative aspect-square bg-gradient-to-br from-slate-blue to-[#7a8294] rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 cursor-pointer"
             >
               {/* Placeholder Image */}
               <div className="w-full h-full flex flex-col items-center justify-center text-white p-4">
@@ -70,7 +70,7 @@ export default function GalleryPage() {
 
         {/* Info Section */}
         <div className="mt-16 text-center">
-          <div className="bg-white border border-medium-grey rounded-2xl p-8 lg:p-12 max-w-4xl mx-auto">
+          <div className="bg-white border border-medium-grey rounded-2xl p-8 lg:p-12 max-w-4xl mx-auto shadow-lg">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark-charcoal mb-4">
               Want to See More?
             </h2>
