@@ -261,6 +261,17 @@ export default function Receipt({ saleId, onClose }) {
               color: #1a1a1a;
               margin-top: 6px;
             }
+            .receipt-footer .company-info {
+              margin-top: 8px;
+              padding-top: 8px;
+              border-top: 1px solid #e5e7eb;
+            }
+            .receipt-footer .company-info p {
+              font-size: 7px;
+              color: #666;
+              line-height: 1.3;
+              margin: 1px 0;
+            }
             @media print {
               body {
                 padding: 0;
@@ -549,9 +560,17 @@ export default function Receipt({ saleId, onClose }) {
                 <p className="salon-info text-[9px] sm:text-[10px] text-slate-blue mb-1">
                   Phone: {receiptData.salon?.phone || 'N/A'}
                 </p>
-                <p className="closing text-[10px] sm:text-xs font-semibold text-dark-charcoal">
+                <p className="closing text-[10px] sm:text-xs font-semibold text-dark-charcoal mb-2">
                   Visit us again soon!
                 </p>
+                <div className="mt-2 pt-2 border-t border-medium-grey">
+                  <p className="salon-info text-[8px] sm:text-[9px] text-slate-blue leading-tight">
+                    Developed by DevAndDone
+                  </p>
+                  <p className="salon-info text-[8px] sm:text-[9px] text-slate-blue leading-tight">
+                    www.devanddone.com
+                  </p>
+                </div>
               </div>
             </div>
           </div>
