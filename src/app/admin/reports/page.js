@@ -2,6 +2,7 @@ import { getSession } from '../../../lib/auth-helpers.js';
 import PageHeader from '../../../components/admin/PageHeader.js';
 import { formatDate, formatCurrency, formatCookiesForHeader } from '../../../lib/utils.js';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 
 async function getDailyReports(startDate, endDate) {
   try {
@@ -136,31 +137,52 @@ export default async function ReportsPage({ searchParams }) {
                   </td>
                 </tr>
               ) : (
-                reports.map((report) => (
+                reports.map((report, index) => {
+                  const dateStr = report.summaryDate ? new Date(report.summaryDate).toISOString().split('T')[0] : '';
+                  return (
                   <tr
-                    key={report._id}
-                    className="border-b border-medium-grey hover:bg-light-grey"
+                    key={report._id || `report-${report.summaryDate}-${index}`}
+                    className="border-b border-medium-grey hover:bg-light-grey cursor-pointer transition-colors group"
                   >
                     <td className="px-4 lg:px-6 py-3 lg:py-4 text-sm text-dark-charcoal font-semibold">
-                      {formatDate(report.summaryDate)}
+                      <Link 
+                        href={`/admin/reports/${dateStr}`}
+                        className="hover:text-slate-blue hover:underline transition-colors flex items-center gap-2 group-hover:text-slate-blue"
+                      >
+                        {formatDate(report.summaryDate)}
+                        <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
                     </td>
                     <td className="px-4 lg:px-6 py-3 lg:py-4 text-sm text-dark-charcoal font-bold">
-                      {formatCurrency(report.totalSales || 0)}
+                      <Link href={`/admin/reports/${dateStr}`} className="block">
+                        {formatCurrency(report.totalSales || 0)}
+                      </Link>
                     </td>
                     <td className="px-4 lg:px-6 py-3 lg:py-4 text-sm text-amber font-bold">
-                      {formatCurrency(report.cashSales || 0)}
+                      <Link href={`/admin/reports/${dateStr}`} className="block">
+                        {formatCurrency(report.cashSales || 0)}
+                      </Link>
                     </td>
                     <td className="px-4 lg:px-6 py-3 lg:py-4 text-sm text-blue font-bold">
-                      {formatCurrency(report.onlineSales || 0)}
+                      <Link href={`/admin/reports/${dateStr}`} className="block">
+                        {formatCurrency(report.onlineSales || 0)}
+                      </Link>
                     </td>
                     <td className="px-4 lg:px-6 py-3 lg:py-4 text-sm text-dark-charcoal">
-                      {report.totalClients || 0}
+                      <Link href={`/admin/reports/${dateStr}`} className="block">
+                        {report.totalClients || 0}
+                      </Link>
                     </td>
                     <td className="px-4 lg:px-6 py-3 lg:py-4 text-sm text-slate-blue">
-                      {report.topEarner?.employeeName || 'N/A'} - {formatCurrency(report.topEarner?.earnings || 0)}
+                      <Link href={`/admin/reports/${dateStr}`} className="block">
+                        {report.topEarner?.employeeName || 'N/A'} - {formatCurrency(report.topEarner?.earnings || 0)}
+                      </Link>
                     </td>
                   </tr>
-                ))
+                  );
+                })
               )}
             </tbody>
           </table>
@@ -171,12 +193,17 @@ export default async function ReportsPage({ searchParams }) {
           {reports.length === 0 ? (
             <div className="p-6 text-center text-slate-blue">No reports found</div>
           ) : (
-            reports.map((report) => (
-              <div key={report._id} className="p-4 space-y-3">
+            reports.map((report, index) => {
+              const dateStr = report.summaryDate ? new Date(report.summaryDate).toISOString().split('T')[0] : '';
+              return (
+              <div key={report._id || `report-${report.summaryDate}-${index}`} className="p-4 space-y-3">
                 <div className="flex justify-between items-start">
-                  <p className="font-semibold text-dark-charcoal text-sm">
+                  <Link 
+                    href={`/admin/reports/${dateStr}`}
+                    className="font-semibold text-dark-charcoal text-sm hover:text-slate-blue hover:underline transition-colors"
+                  >
                     {formatDate(report.summaryDate)}
-                  </p>
+                  </Link>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div>
@@ -202,7 +229,8 @@ export default async function ReportsPage({ searchParams }) {
                   </div>
                 </div>
               </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>

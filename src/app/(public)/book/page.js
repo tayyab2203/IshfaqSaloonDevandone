@@ -67,7 +67,10 @@ export default function BookPage() {
   };
 
   const fetchAvailableSlots = async () => {
-    if (!selectedDate) return;
+    if (!selectedDate || selectedServices.length === 0) {
+      setAvailableSlots([]);
+      return;
+    }
     
     try {
       const serviceIds = selectedServices.map(s => s._id).join(',');
@@ -76,11 +79,24 @@ export default function BookPage() {
       );
       const data = await res.json();
       if (data.success) {
-        setAvailableSlots(data.data);
-        setTotalDuration(data.totalDuration);
+        setAvailableSlots(data.data || []);
+        setTotalDuration(data.totalDuration || 0);
+        // Show message if slots are empty and there's a message (e.g., closed day)
+        if ((!data.data || data.data.length === 0) && data.message) {
+          setError(data.message);
+        } else if (data.data && data.data.length === 0) {
+          setError('No available time slots for this date. Please select another date.');
+        } else {
+          setError(''); // Clear error if slots are available
+        }
+      } else {
+        setError(data.error || 'Failed to fetch available slots');
+        setAvailableSlots([]);
       }
     } catch (error) {
       console.error('Error fetching slots:', error);
+      setError('Failed to load available time slots. Please try again.');
+      setAvailableSlots([]);
     }
   };
 
@@ -178,6 +194,17 @@ export default function BookPage() {
 
       if (data.success) {
         setBookingId(data.data._id);
+        
+        // Check if advance payment is required
+        if (data.requiresPayment && data.paymentStatus === 'pending') {
+          // Redirect to payment page
+          router.push(`/book/payment?bookingId=${data.data._id}`);
+          return;
+        }
+        
+        // If no payment required, proceed to confirmation step
+        setStep(5);
+        
         // Mock WhatsApp confirmation
         console.log('WhatsApp confirmation sent:', {
           to: customerPhone,
@@ -193,7 +220,17 @@ export default function BookPage() {
     }
   };
 
+  // Set minimum date to today (no past dates allowed)
   const minDate = format(new Date(), 'yyyy-MM-dd');
+  
+  // Filter out past time slots when date is today
+  const filteredAvailableSlots = selectedDate === minDate 
+    ? availableSlots.filter(slot => {
+        const now = new Date();
+        const currentTime = format(now, 'HH:mm');
+        return slot >= currentTime;
+      })
+    : availableSlots;
 
   return (
     <div className="py-12 sm:py-16 px-4 bg-light-grey min-h-screen">
@@ -318,24 +355,34 @@ export default function BookPage() {
                 <label className="block text-sm font-semibold text-dark-charcoal mb-2">
                   Available Time Slots
                 </label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
-                  {availableSlots.map((slot) => (
-                    <button
-                      key={slot}
-                      onClick={() => setSelectedTime(slot)}
-                      className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg border-2 text-sm sm:text-base font-medium transition-all duration-200 touch-manipulation ${
-                        selectedTime === slot
-                          ? 'bg-dark-charcoal text-white border-dark-charcoal shadow-md'
-                          : 'bg-white text-dark-charcoal border-medium-grey hover:bg-light-grey active:bg-medium-grey'
-                      }`}
-                    >
-                      {slot}
-                    </button>
-                  ))}
-                </div>
-                {availableSlots.length === 0 && (
-                  <p className="text-slate-blue mt-4">No available slots for this date</p>
+                {error && error.includes('closed') && (
+                  <div className="mb-4 p-3 bg-amber bg-opacity-10 border border-amber-300 rounded text-amber-700 text-sm">
+                    {error}
+                  </div>
                 )}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
+                  {filteredAvailableSlots.length === 0 ? (
+                    <p className="col-span-full text-center text-slate-blue py-4">
+                      {error && error.includes('closed') 
+                        ? error 
+                        : 'No available time slots for this date. Please select another date.'}
+                    </p>
+                  ) : (
+                    filteredAvailableSlots.map((slot) => (
+                      <button
+                        key={slot}
+                        onClick={() => setSelectedTime(slot)}
+                        className={`px-3 sm:px-4 py-2.5 sm:py-2 rounded-lg border-2 text-sm sm:text-base font-medium transition-all duration-200 touch-manipulation ${
+                          selectedTime === slot
+                            ? 'bg-dark-charcoal text-white border-dark-charcoal shadow-md'
+                            : 'bg-white text-dark-charcoal border-medium-grey hover:bg-light-grey active:bg-medium-grey'
+                        }`}
+                      >
+                        {slot}
+                      </button>
+                    ))
+                  )}
+                </div>
               </div>
             )}
             <div className="mt-6 flex flex-col-reverse sm:flex-row justify-between gap-3">

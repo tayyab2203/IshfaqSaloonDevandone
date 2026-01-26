@@ -26,6 +26,30 @@ export async function PUT(request) {
     await connectDB();
     const body = await request.json();
 
+    // Validate working hours if they are being updated
+    if (body.openingTime !== undefined || body.closingTime !== undefined) {
+      const openingTime = body.openingTime;
+      const closingTime = body.closingTime;
+      
+      if (openingTime && closingTime) {
+        // Parse times to minutes for comparison
+        const [startHour, startMin] = openingTime.split(':').map(Number);
+        const [endHour, endMin] = closingTime.split(':').map(Number);
+        const startMinutes = startHour * 60 + startMin;
+        const endMinutes = endHour * 60 + endMin;
+        
+        if (startMinutes >= endMinutes) {
+          return NextResponse.json(
+            { 
+              success: false, 
+              error: 'Opening time must be before closing time. Please check your working hours.' 
+            },
+            { status: 400 }
+          );
+        }
+      }
+    }
+
     let settings = await Settings.findOne();
     if (!settings) {
       settings = new Settings(body);

@@ -12,9 +12,12 @@ export default function ServicesPage() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    image: '',
     price: 0,
     duration: 30,
     isActive: true,
@@ -62,7 +65,8 @@ export default function ServicesPage() {
       if (data.success) {
         setShowForm(false);
         setEditingId(null);
-        setFormData({ name: '', description: '', price: 0, duration: 30, isActive: true });
+        setImagePreview(null);
+        setFormData({ name: '', description: '', image: '', price: 0, duration: 30, isActive: true });
         fetchServices();
       } else {
         setError(data.error || 'Failed to save service');
@@ -77,12 +81,74 @@ export default function ServicesPage() {
     setFormData({
       name: service.name || '',
       description: service.description || '',
+      image: service.image || '',
       price: service.price || 0,
       duration: service.duration || 30,
       isActive: service.isActive !== undefined ? service.isActive : true,
     });
+    if (service.image) {
+      setImagePreview(service.image);
+    } else {
+      setImagePreview(null);
+    }
     setEditingId(service._id);
     setShowForm(true);
+  };
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size must be less than 5MB');
+      return;
+    }
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload image
+    setUploadingImage(true);
+    setError('');
+
+    try {
+      const uploadFormData = new FormData();
+      uploadFormData.append('image', file);
+
+      const res = await fetch('/api/upload/service-image', {
+        method: 'POST',
+        body: uploadFormData,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setFormData((prev) => ({
+          ...prev,
+          image: data.data.imageUrl,
+        }));
+      } else {
+        setError(data.error || 'Failed to upload image');
+        setImagePreview(null);
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setError('Failed to upload image. Please try again.');
+      setImagePreview(null);
+    } finally {
+      setUploadingImage(false);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -234,6 +300,44 @@ export default function ServicesPage() {
                 className="w-full px-4 py-2 border border-medium-grey rounded focus:outline-none focus:ring-2 focus:ring-slate-blue"
               />
             </div>
+            <div>
+              <label className="block text-sm font-semibold text-dark-charcoal mb-2">
+                Service Image
+              </label>
+              <div className="flex flex-col sm:flex-row gap-6 items-start">
+                <div className="flex-shrink-0">
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-32 h-32 object-cover rounded-lg border border-medium-grey"
+                    />
+                  ) : (
+                    <div className="w-32 h-32 bg-light-grey border border-medium-grey rounded-lg flex items-center justify-center">
+                      <span className="text-slate-blue text-sm">No image</span>
+                    </div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    disabled={uploadingImage}
+                    className="w-full text-sm text-dark-charcoal file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-slate-blue file:text-white hover:file:bg-[#7a8294] file:cursor-pointer disabled:opacity-50"
+                  />
+                  <p className="text-xs text-slate-blue mt-2">
+                    Max size: 5MB. Supported formats: JPG, PNG, GIF
+                  </p>
+                  {uploadingImage && (
+                    <p className="text-sm text-slate-blue mt-2">Uploading...</p>
+                  )}
+                  {formData.image && !uploadingImage && (
+                    <p className="text-xs text-green-600 mt-2">✓ Image uploaded successfully</p>
+                  )}
+                </div>
+              </div>
+            </div>
             <div className="flex gap-4">
               <Button type="submit">{editingId ? 'Update' : 'Create'} Service</Button>
               <Button
@@ -242,7 +346,8 @@ export default function ServicesPage() {
                 onClick={() => {
                   setShowForm(false);
                   setEditingId(null);
-                  setFormData({ name: '', description: '', price: 0, duration: 30, isActive: true });
+                  setImagePreview(null);
+                  setFormData({ name: '', description: '', image: '', price: 0, duration: 30, isActive: true });
                 }}
               >
                 Cancel

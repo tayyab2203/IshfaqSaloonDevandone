@@ -5,6 +5,33 @@ import Sale from '../../../../models/Sale.js';
 import Customer from '../../../../models/Customer.js';
 import Employee from '../../../../models/Employee.js';
 
+export async function GET(request, { params }) {
+  try {
+    await connectDB();
+    const { id } = await params;
+
+    const booking = await Booking.findById(id)
+      .populate('customerId', 'name phone email')
+      .populate('serviceIds', 'name price duration')
+      .populate('employeeId', 'name role');
+
+    if (!booking) {
+      return NextResponse.json(
+        { success: false, error: 'Booking not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ success: true, data: booking });
+  } catch (error) {
+    console.error('Error fetching booking:', error);
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch booking' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function PUT(request, { params }) {
   try {
     await connectDB();

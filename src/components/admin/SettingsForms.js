@@ -19,6 +19,8 @@ export default function SettingsForms({ initialSettings }) {
     closedDays: [],
     whatsappNumber: '',
     defaultCommissionRate: 20,
+    advancePaymentEnabled: false,
+    advancePercentage: 50,
     ...initialSettings,
   });
   const [logoPreview, setLogoPreview] = useState(initialSettings?.logo || '');
@@ -36,6 +38,8 @@ export default function SettingsForms({ initialSettings }) {
         closedDays: initialSettings.closedDays || [],
         whatsappNumber: initialSettings.whatsappNumber || '',
         defaultCommissionRate: initialSettings.defaultCommissionRate || 20,
+        advancePaymentEnabled: initialSettings.advancePaymentEnabled || false,
+        advancePercentage: initialSettings.advancePercentage || 50,
       });
       setLogoPreview(initialSettings.logo || '');
     }
@@ -113,6 +117,20 @@ export default function SettingsForms({ initialSettings }) {
           };
           break;
         case 'hours':
+          // Validate working hours
+          if (settings.openingTime && settings.closingTime) {
+            const [startHour, startMin] = settings.openingTime.split(':').map(Number);
+            const [endHour, endMin] = settings.closingTime.split(':').map(Number);
+            const startMinutes = startHour * 60 + startMin;
+            const endMinutes = endHour * 60 + endMin;
+            
+            if (startMinutes >= endMinutes) {
+              setMessage({ ...message, hours: 'Opening time must be before closing time.' });
+              setLoading({ ...loading, [section]: false });
+              return;
+            }
+          }
+          
           dataToSend = {
             openingTime: settings.openingTime,
             closingTime: settings.closingTime,
@@ -127,6 +145,12 @@ export default function SettingsForms({ initialSettings }) {
         case 'commission':
           dataToSend = {
             defaultCommissionRate: settings.defaultCommissionRate,
+          };
+          break;
+        case 'payment':
+          dataToSend = {
+            advancePaymentEnabled: settings.advancePaymentEnabled,
+            advancePercentage: settings.advancePercentage,
           };
           break;
       }
@@ -369,6 +393,55 @@ export default function SettingsForms({ initialSettings }) {
           )}
           <Button type="submit" disabled={loading.commission}>
             {loading.commission ? 'Saving...' : 'Save Commission Rate'}
+          </Button>
+        </form>
+      </div>
+
+      {/* Advance Payment Settings */}
+      <div className="bg-white border border-medium-grey rounded-lg p-6">
+        <h2 className="text-xl font-bold text-dark-charcoal mb-4">Advance Payment Settings</h2>
+        <form onSubmit={(e) => handleSubmit(e, 'payment')} className="space-y-4">
+          <div>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={settings.advancePaymentEnabled}
+                onChange={(e) => setSettings({ ...settings, advancePaymentEnabled: e.target.checked })}
+                className="w-4 h-4"
+              />
+              <span className="text-sm font-semibold text-dark-charcoal">
+                Enable Advance Payment for Online Bookings
+              </span>
+            </label>
+            <p className="text-xs text-slate-blue mt-1 ml-6">
+              When enabled, customers must pay an advance amount before their booking is confirmed.
+            </p>
+          </div>
+          {settings.advancePaymentEnabled && (
+            <div>
+              <label className="block text-sm font-semibold text-dark-charcoal mb-2">
+                Advance Payment Percentage (%)
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={settings.advancePercentage}
+                onChange={(e) => setSettings({ ...settings, advancePercentage: Number(e.target.value) })}
+                className="w-full px-4 py-2 border border-medium-grey rounded focus:outline-none focus:ring-2 focus:ring-slate-blue"
+              />
+              <p className="text-xs text-slate-blue mt-1">
+                Percentage of total booking amount to be paid in advance (0-100%)
+              </p>
+            </div>
+          )}
+          {message.payment && (
+            <p className={`text-sm ${message.payment.includes('success') ? 'text-green' : 'text-red'}`}>
+              {message.payment}
+            </p>
+          )}
+          <Button type="submit" disabled={loading.payment}>
+            {loading.payment ? 'Saving...' : 'Save Payment Settings'}
           </Button>
         </form>
       </div>

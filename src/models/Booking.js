@@ -39,6 +39,27 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  // Advance Payment Fields
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'paid', 'failed'],
+    default: 'pending',
+  },
+  advanceAmount: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  // Reschedule Fields
+  rescheduleCount: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  rescheduledFrom: {
+    type: Date,
+    default: null,
+  },
 }, {
   timestamps: true,
 });

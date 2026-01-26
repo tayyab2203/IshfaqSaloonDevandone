@@ -47,6 +47,18 @@ const settingsSchema = new mongoose.Schema({
     min: 0,
     max: 100,
   },
+  
+  // Advance Payment Settings
+  advancePaymentEnabled: {
+    type: Boolean,
+    default: false,
+  },
+  advancePercentage: {
+    type: Number,
+    default: 50,
+    min: 0,
+    max: 100,
+  },
 }, {
   timestamps: true,
 });

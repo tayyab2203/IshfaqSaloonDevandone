@@ -21,7 +21,7 @@ export async function GET() {
         closingTime: settings.closingTime || '18:00',
         closedDays: settings.closedDays || [],
       },
-    });
+    }, { status: 200 });
   } catch (error) {
     console.error('Error fetching public settings:', error);
     // Return fallback data instead of error to prevent app crashes
@@ -38,6 +38,6 @@ export async function GET() {
         closingTime: '18:00',
         closedDays: [],
       },
-    });
+    }, { status: 200 });
   }
 }
