@@ -247,7 +247,7 @@ export default async function HomePage() {
                           {member.role.charAt(0).toUpperCase() + member.role.slice(1)}
                         </div>
                       </div>
-                      <h3 className="text-xl lg:text-2xl font-bold text-white mb-3">
+                      <h3 className="text-xl lg:text-2xl font-extrabold text-[#31363E] mb-3">
                         {member.name}
                       </h3>
                       {member.services && member.services.length > 0 ? (
